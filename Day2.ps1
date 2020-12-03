@@ -46,17 +46,16 @@ foreach ($value in $data) {
     
     $valueCondition = $valueCondition.Split(":")
     $valueCondition = $valueCondition[0]
-   
-    #$contentCount = ($valueContent.ToCharArray() | Where-Object {$_ -eq "$valueCondition"} | Measure-Object).Count
-    #$valueContent.substring(5,1)
-    
-    foreach ($digit in $valueRange) {
-        if ($digit -eq $valueContent.substring($valueRange[0]-1,1)) {
-            $validContent = $validContent+1
-            }
-        if ($digit -eq $valueContent.substring($valueRange[1]-1,1)) {
-            $validContent = $validContent+1
-            }
+
+    If ($valueContent.substring($valueRange[0]-1,1) -eq $valueCondition -And $valueContent.substring($valueRange[1]-1,1) -eq $valueCondition) {
+        $validContent = $validContent } Else {
+            If ($valueContent.substring($valueRange[0]-1,1) -eq $valueCondition) {
+                $validContent = $validContent+1 } Else {
+                    If ($valueContent.substring($valueRange[1]-1,1) -eq $valueCondition) {
+                        $validContent = $validContent+1 } Else {
+                            $validContent = $validContent }
+                }
         }
 }
+        
    Write-host "The number of valid passwords is $validContent"
