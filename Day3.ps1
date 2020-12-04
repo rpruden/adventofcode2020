@@ -16,30 +16,37 @@ $rightPosition = 1
 # every 32nd character is equal to the 1st character of each line
 
 $currentPosition = $downPosition, $rightPosition
+$currentStep = 1
 foreach ($line in $data) {
-  $currentPosition[0] = $currentPosition[0]+$moveDown
-  $currentPosition[1] = $currentPosition[1]+$moveRight
-  if ($currentPosition[1] -gt $line.length) {
+    #check line length. If too long, wrap around.
+    if ($currentPosition[1] -gt $line.length) {
     $currentPosition[1] = $currentPosition[1] - $line.length
-    $line = $line + $line
     }
-  Write-Host $currentPosition
-  $tempVar = $line.substring($currentPosition[1]-1,1)
-  if ($tempVar -eq "#") {
-    $totalCount = $totalCount++
+
+    #Write values to screen (optional)
+    Write-Host "Step $currentStep, Location $currentPosition $line"
+
+    #Check for trees and count them
+    $treeVar = $line.substring($currentPosition[1]-1,1)
+    if ($treeVar -eq "#") {
+        $totalCount = $totalCount + 1
+    }
+
+    #Check if final line has been read, if not count upward, wrapping if necessary
+    if ($currentPosition[0] -le $dataLines) {
+        $currentPosition[0] = $currentPosition[0]+$moveDown
+        $currentPosition[1] = $currentPosition[1]+$moveRight
+        if ($currentPosition[1] -gt $line.length) {
+            $currentPosition[1] = $currentPosition[1] - $line.length
+            #Write-Host Position changed to $currentPosition[1]
+            }
+    }
+
+    #Increment Step by 1
+    $currentStep = $currentStep +1
+
   #$pass.substring($moveRight,1)
   #$dataLines = $dataLines-=1
+  
   }
-
-foreach ($value in $data) {
-    $value
-    }
-
-foreach ($value in $data) {
-#  $dataPass = 0
-#  If ($dataPass -lt $dataLines) {
-#    $value = $value + $value
-#    $dataPass = $dataPass+1
-#    }
-  write-host $value
-  }
+  Write-host "$dataLines lines processed; $totalCount trees encountered"
