@@ -39,3 +39,6 @@ foreach ($value in $data) {
 
 $seatIDs | Measure -Maximum
 $seatIDs = $SeatIDs | sort-object
+$mySeat = $seatIDs | % {$i = 1} {While ($i -lt $_) {$i;$i++};$i++}
+$mySeat = $mySeat[$mySeat.length - 1]
+Write-Host "My seat is $myseat"
